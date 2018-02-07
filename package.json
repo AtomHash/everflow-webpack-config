@@ -1,5 +1,5 @@
 {
-  "name": "webpack-config-everflow",
+  "name": "everflow-webpack-config",
   "version": "2.1.0",
   "description": "webpack config for Everflow.",
   "main": "./index.js",
