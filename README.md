@@ -1,2 +1,2 @@
 # everflow-webpack-config
-Everflow webpack config
+webpack config for Everflow

@@ -1,0 +1,42 @@
+{
+  "name": "webpack-config-everflow",
+  "version": "2.1.0",
+  "description": "webpack config for Everflow.",
+  "main": "./index.js",
+  "author": "AtomHash",
+  "dependencies": {
+    "fs-extra": "^5.0.0",
+    "hard-source-webpack-plugin": "^0.5.18",
+    "url-loader": "^0.6.2",
+    "copy-webpack-plugin": "^4.3.1",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-include-assets-plugin": "^1.0.2",
+    "html-webpack-plugin": "^2.30.1",
+    "webpack": "^3.10.0",
+    "uglifyjs-webpack-plugin": "^1.1.8",
+    "node-sass": "^4.7.2",
+    "postcss-loader": "^2.1.0",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.20.1",
+    "ts-loader": "^3.4.0",
+    "cross-env": "^5.1.3",
+    "css-loader": "^0.28.9",
+    "expose-loader": "^0.7.4",
+    "file-loader": "^1.1.6",
+    "glob": "^7.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AtomHash/webpack-config-everflow.git"
+  },
+  "keywords": [
+    "everflow",
+    "config",
+    "webpack"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AtomHash/webpack-config-everflow/issues"
+  },
+  "homepage": "https://github.com/AtomHash/webpack-config-everflow#readme"
+}
