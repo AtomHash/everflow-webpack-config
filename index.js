@@ -12,6 +12,36 @@ var rootPath = path.resolve(__dirname, '../../');
 var Config = require(path.resolve(rootPath, './src/config.js'));
 var assets_directory = path.resolve(rootPath, './src/assets/');
 
+// Generate Module routes.ts
+modulesPath = "./src/modules";
+moduleRoutes = path.join(path.resolve(modulesPath));
+routesFile = './src/routes.ts';
+routesFileText = "";
+var importNames = []
+var stream = fs.createWriteStream(routesFile);
+for (let folder of fs.readdirSync(path.resolve(modulesPath)))
+{
+    if (fs.statSync(path.join(path.resolve(modulesPath), folder)).isDirectory())
+    {
+        moduleRoutesName = folder + 'Routes';
+        importNames.push(moduleRoutesName);
+        stream.write("import " + moduleRoutesName + " from \"./modules/" + folder + "/routes\";\n");
+    }
+}
+stream.write("export default [].concat(\n");
+counter = 0
+for (let importName of importNames)
+{
+    counter++;
+    if (counter === importNames.length) {
+        stream.write(importName+"\n");
+    } else {
+        stream.write(importName+",\n");
+    }
+}
+stream.write(");");
+stream.end();
+
 module.exports = {
   context: rootPath,
   entry: ['./src/boot.ts'].concat(
@@ -129,5 +159,5 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: (Config.debug) ? '#eval-source-map' : '#source-map'
+  devtool: '#source-map'
 }
