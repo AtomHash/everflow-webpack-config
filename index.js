@@ -17,7 +17,7 @@ modulesPath = "./src/modules";
 moduleRoutes = path.join(path.resolve(modulesPath));
 routesFile = './src/routes.ts';
 routesFileText = "";
-var importNames = []
+var importNames = [];
 var stream = fs.createWriteStream(routesFile);
 for (let folder of fs.readdirSync(path.resolve(modulesPath)))
 {
@@ -29,14 +29,16 @@ for (let folder of fs.readdirSync(path.resolve(modulesPath)))
     }
 }
 stream.write("export default [].concat(\n");
-counter = 0
+counter = 0;
 for (let importName of importNames)
 {
     counter++;
-    if (counter === importNames.length) {
-        stream.write(importName+"\n");
-    } else {
-        stream.write(importName+",\n");
+    if (counter === importNames.length)
+    {
+        stream.write(importName + "\n");
+    } else
+    {
+        stream.write(importName + ",\n");
     }
 }
 stream.write(");");
