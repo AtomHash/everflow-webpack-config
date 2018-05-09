@@ -4,7 +4,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
-var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 var fs = require('fs-extra');
@@ -12,7 +12,42 @@ var rootPath = path.resolve(__dirname, '../../');
 var Config = require(path.resolve(rootPath, './src/config.js'));
 var assets_directory = path.resolve(rootPath, './src/assets/');
 
+// Generate Module routes.ts
+modulesPath = "./src/modules";
+moduleRoutes = path.join(path.resolve(modulesPath));
+routesFile = './src/routes.ts';
+routesFileText = "";
+var importNames = [];
+var stream = fs.createWriteStream(routesFile);
+for (let folder of fs.readdirSync(path.resolve(modulesPath)))
+{
+    if (fs.statSync(path.join(path.resolve(modulesPath), folder)).isDirectory())
+    {
+        moduleRoutesName = folder + 'Routes';
+        importNames.push(moduleRoutesName);
+        stream.write("import " + moduleRoutesName + " from \"./modules/" + folder + "/routes\";\n");
+    }
+}
+stream.write("export default [].concat(\n");
+counter = 0;
+for (let importName of importNames)
+{
+    counter++;
+    if (counter === importNames.length)
+    {
+        stream.write(importName + "\n");
+    } else
+    {
+        stream.write(importName + ",\n");
+    }
+}
+stream.write(");");
+stream.end();
+
+// Start webpack config
+
 module.exports = {
+  mode: (Config.debug) ? 'development' : 'production',
   context: rootPath,
   entry: ['./src/boot.ts'].concat(
     glob.sync("**/entry.scss", { absolute: true, cwd: path.resolve("./src/") })
@@ -21,6 +56,20 @@ module.exports = {
     path: path.resolve(rootPath, './dist/'),
     filename: 'boot.js',
     publicPath: '/'
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: false,
+          ecma: 6,
+          mangle: true
+        },
+        sourceMap: true
+      })
+    ]
   },
   plugins: [
       new HardSourceWebpackPlugin(),
@@ -54,19 +103,6 @@ module.exports = {
           publicPath: '/assets/js/',
           assets: glob.sync("*.js", { cwd: path.resolve("./src/assets/js/") }),
           append: false
-      }),
-      new webpack.DefinePlugin({
-          'process.env': {
-              //set to development(adds vuejs debugging) or production (remove vuejs debugging)
-              NODE_ENV: (Config.debug) ? 'development' : 'production'
-          }
-      }),
-      new webpack.optimize.UglifyJsPlugin({
-          sourceMap: (Config.debug) ? false : true,
-          compress:
-          {
-              warnings: false
-          }
       })
   ],
   module: {
@@ -129,5 +165,5 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: (Config.debug) ? '#eval-source-map' : '#source-map'
+  devtool: '#source-map'
 }
