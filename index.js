@@ -64,10 +64,10 @@ module.exports = {
         parallel: true,
         uglifyOptions: {
           compress: false,
-          ecma: 6,
+          ecma: 5,
           mangle: true
         },
-        sourceMap: true
+        sourceMap: (Config.debug)
       })
     ]
   },
@@ -76,8 +76,7 @@ module.exports = {
       new CopyWebpackPlugin([
           { from: assets_directory + '/js/', to: './assets/js/' },
           { from: assets_directory + '/css/', to: './assets/css/' },
-          { from: assets_directory + '/images/', to: './assets/images/' },
-          { from: assets_directory + '/fonts/', to: './assets/fonts/' }
+          { from: assets_directory + '/images/', to: './assets/images/' }
       ]),
       new ExtractTextPlugin({
           filename: 'assets/css/sassy.css',
@@ -111,7 +110,7 @@ module.exports = {
               test: /\.(scss)$/,
               use: ExtractTextPlugin.extract({
                   fallback: 'style-loader',
-                  use: ['css-loader','sass-loader'],
+                  use: [{ loader: 'css-loader', options: { minimize: true } },'sass-loader'],
                   publicPath: "/",
               })
           },
@@ -165,5 +164,5 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#source-map'
+  devtool: (Config.debug) ? '#source-map' : false
 }
