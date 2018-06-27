@@ -74,9 +74,10 @@ module.exports = {
   plugins: [
       new HardSourceWebpackPlugin(),
       new CopyWebpackPlugin([
-          { from: assets_directory + '/js/', to: './assets/js/' },
-          { from: assets_directory + '/css/', to: './assets/css/' },
-          { from: assets_directory + '/images/', to: './assets/images/' }
+          { from: path.resolve(assets_directory, 'js'), to: './assets/js/' },
+          { from: path.resolve(assets_directory, 'css'), to: './assets/css/' },
+          { from: path.resolve(assets_directory, 'images'), to: './assets/images/' },
+          { from: path.resolve(assets_directory, 'fonts'), to: './assets/fonts/' }
       ]),
       new ExtractTextPlugin({
           filename: 'assets/css/sassy.css',
