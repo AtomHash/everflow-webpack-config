@@ -1,6 +1,6 @@
 {
   "name": "everflow-webpack-config",
-  "version": "2.1.97",
+  "version": "2.1.98",
   "description": "webpack config for Everflow.",
   "main": "./index.js",
   "author": "AtomHash",

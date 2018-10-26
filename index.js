@@ -6,7 +6,6 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 var VueLoaderPlugin = require('vue-loader/lib/plugin')
 var fs = require('fs-extra');
 var rootPath = path.resolve(__dirname, '../../');
