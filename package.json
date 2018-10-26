@@ -6,7 +6,6 @@
   "author": "AtomHash",
   "dependencies": {
     "fs-extra": "^7.0.0",
-    "hard-source-webpack-plugin": "^0.12.0",
     "url-loader": "^1.1.1",
     "copy-webpack-plugin": "^4.5.2",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
