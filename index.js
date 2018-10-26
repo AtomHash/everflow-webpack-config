@@ -74,7 +74,6 @@ module.exports = {
   },
   plugins: [
       new VueLoaderPlugin(),
-      new HardSourceWebpackPlugin(),
       new CopyWebpackPlugin([
           { from: path.resolve(assets_directory, 'js'), to: './assets/js/' },
           { from: path.resolve(assets_directory, 'css'), to: './assets/css/' },
