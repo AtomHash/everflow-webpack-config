@@ -3,7 +3,7 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-var HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+var HtmlWebpackDeployPlugin = require('html-webpack-deploy-plugin');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var VueLoaderPlugin = require('vue-loader/lib/plugin')
@@ -74,8 +74,6 @@ module.exports = {
   plugins: [
       new VueLoaderPlugin(),
       new CopyWebpackPlugin([
-          { from: path.resolve(assets_directory, 'js'), to: './assets/js/' },
-          { from: path.resolve(assets_directory, 'css'), to: './assets/css/' },
           { from: path.resolve(assets_directory, 'images'), to: './assets/images/' },
           { from: path.resolve(assets_directory, 'fonts'), to: './assets/fonts/' }
       ]),
@@ -86,6 +84,7 @@ module.exports = {
       new HtmlWebpackPlugin({
           filename: 'index.html',
           template: './src/index.html',
+          chunksSortMode: 'none',
           minify: {
               collapseWhitespace: true,
               removeComments: true,
@@ -94,14 +93,16 @@ module.exports = {
               removeStyleLinkTypeAttributes: true
           }
       }),
-      new HtmlWebpackIncludeAssetsPlugin({
-          publicPath: '/assets/css/',
-          assets: glob.sync("*.css", { cwd: path.resolve("./src/assets/css/") }),
-          append: false
-      }),
-      new HtmlWebpackIncludeAssetsPlugin({
-          publicPath: '/assets/js/',
-          assets: glob.sync("*.js", { cwd: path.resolve("./src/assets/js/") }),
+      new HtmlWebpackDeployPlugin({
+          assets: {
+            copy: [
+                { from: path.resolve(assets_directory, 'js'), to: 'js' },
+                { from: path.resolve(assets_directory, 'css'), to: 'css' }],
+            links: [
+                { path: 'css', glob: '*.css', globPath: path.resolve(assets_directory, 'css') }],
+            scripts: [
+                { path: 'js', glob: '*.js', globPath: path.resolve(assets_directory, 'js') }]
+          },
           append: false
       })
   ],
@@ -111,7 +112,7 @@ module.exports = {
               test: /\.(scss)$/,
               use: ExtractTextPlugin.extract({
                   fallback: 'style-loader',
-                  use: [{ loader: 'css-loader', options: { minimize: true } },'sass-loader'],
+                  use: [{ loader: 'css-loader' },'sass-loader'],
                   publicPath: "/",
               })
           },
